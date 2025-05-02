@@ -1,23 +1,23 @@
-from django.db import models
-from wagtail.models import Page, Orderable
-from wagtail.fields import RichTextField
-from wagtail.admin.panels import FieldPanel, InlinePanel
 from datetime import date
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from wagtail.snippets.models import register_snippet
+
 from django import forms
+from django.db import models
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import RichTextField
+from wagtail.models import Orderable, Page
+from wagtail.snippets.models import register_snippet
 
 
 class BlogIndexPage(Page):
     """
     A page that lists all blog posts.
     """
-    descripton = RichTextField(blank=True)
+    description = RichTextField(blank=True)
     
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
-    ]
+    content_panels = Page.content_panels + [FieldPanel("description")]
     
 class BlogPostTag(TaggedItemBase):
     content_object = ParentalKey("BlogPostPage", related_name="tagged_items", on_delete=models.CASCADE)
@@ -30,7 +30,6 @@ class BlogPostPage(Page):
     date = models.DateField("Post date", default=date.today)
     intro =  RichTextField(blank=True)
     authors = ParentalManyToManyField('blog.Author', blank=True)
-    title = models.CharField(max_length=255)
     body = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=BlogPostTag, blank=True)
     
