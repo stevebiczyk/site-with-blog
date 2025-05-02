@@ -6,6 +6,7 @@ from datetime import date
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.snippets.models import register_snippet
 from django import forms
+from taggit.models import TaggedItemBase
 
 
 class BlogIndexPage(Page):
@@ -18,6 +19,10 @@ class BlogIndexPage(Page):
         FieldPanel('description'),
     ]
     
+class BlogPostTag(TaggedItemBase):
+    content_object = ParentalKey("BlogPostPage", related_name="tagged_items", on_delete=models.CASCADE)
+
+    
 class BlogPostPage(Page):
     """
     A page that represents a single blog post.
@@ -27,6 +32,7 @@ class BlogPostPage(Page):
     authors = ParentalManyToManyField('blog.Author', blank=True)
     title = models.CharField(max_length=255)
     body = RichTextField(blank=True)
+    tags = ClusterTaggableManager(through=BlogPostTag, blank=True)
     
     content_panels = Page.content_panels + [InlinePanel('image_gallery', label="Image Gallery"),
         FieldPanel('date'),
@@ -34,6 +40,7 @@ class BlogPostPage(Page):
         FieldPanel('authors', widget=forms.CheckboxSelectMultiple),
         FieldPanel('title'),
         FieldPanel('body'),
+        FieldPanel('tags'),
     ]
     
 class BlogPageImageGallery(Orderable):
@@ -68,3 +75,13 @@ class Author(models.Model):
     ]
     def __str__(self):
         return self.name
+    
+class TagIndexPage(Page):
+    """
+    A page that lists all tags.
+    """
+    description = RichTextField(blank=True)
+    
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+    ]
