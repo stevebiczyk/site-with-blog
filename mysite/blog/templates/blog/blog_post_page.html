@@ -1,11 +1,76 @@
 {% extends 'base.html' %}
-{% load static wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 
 {% block content %}
 <div class="blog-post-container">
     <h1>{{page.title}}</h1>
 </div>
+
+
+{% with  authors=page.authors.all  %}
+    {% if authors %}
+        <div class="author-info">
+            <p><strong>Written by:</strong></p>
+            <ul class="authors-list">
+                {% for author in authors %}
+                    <li class="author-item">
+                        {% image author.author_image fill-60x60 %}
+                        <span class="author-name">{{ author.name }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    <p class="date">Published on:{{ page.date }}</p>
+
+    <div class="intro">
+        {{ page.intro|richtext }}
+    </div>
+
+    <div class="body">
+        {{ page.body|richtext }}
+    </div>
+
+    {% else %}
+        <p>No authors available.</p>
+    {% endif %}
+{% endwith %}
+
+{% with images=page.image_gallery.all %}
+
+{% endwith %}
+
+{% if images %}
+    <div></div class="image-gallery">
+        <h2>Image Gallery</h2>
+        <ul class="gallery-list">
+            {% for image in images %}
+                <li class="gallery-item">
+                    {% image image.image fill-340x340 %}
+                    <p>{{ page.caption }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+{% endif %}
+    
+
+{% with  tags=page.tags.all  %}
+    {% if tags %}
+        <div class="blog-post-tags">
+            <h2>Tags</h2>
+            <ul class="tags-list">
+                {% for tag in tags %}
+                    <li>{{ tag.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p>No tags available.</p>
+    {% endif %}
+    
+{% endwith %}
+    
     
 {% endblock %}
     
