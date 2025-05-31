@@ -61,7 +61,8 @@
             <h2>Tags</h2>
             <ul class="tags-list">
                 {% for tag in tags %}
-                    <li>{{ tag.name }}</li>
+                <a class="tag-button" href='{% slugurl "tags" %}'>{{tag}}</a>
+                    {% comment %} <li>{{ tag.name }}</li> {% endcomment %}
                 {% endfor %}
             </ul>
         </div>
