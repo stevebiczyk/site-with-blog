@@ -79,6 +79,14 @@ class TagIndexPage(Page):
     """
     A page that lists all tags.
     """
+    def get_context(self, request):
+        tag = request.GET.get("tag")
+        blogposts = BlogPostPage.objects.filter(tags__name=tag)
+        
+        context = super().get_context(request)
+        context["blogposts"] = blogposts
+        return context
+    
     description = RichTextField(blank=True)
     
     content_panels = Page.content_panels + [
