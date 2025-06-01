@@ -20,7 +20,7 @@ class BlogIndexPage(Page):
     content_panels = Page.content_panels + [FieldPanel("description")]
     def get_context(self, request):
         context = super().get_context(request)
-        blogposts = self.get.children().live().order_by('-first_published_at')
+        blogposts = self.get_children().live().order_by('-first_published_at')
         context["blogposts"] = blogposts
         
         return context
@@ -38,6 +38,16 @@ class BlogPostPage(Page):
     authors = ParentalManyToManyField('blog.Author', blank=True)
     body = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=BlogPostTag, blank=True)
+    
+    def main_image(self):
+        """
+        Returns the first image in the image gallery, if available.
+        """
+        thumbnail = self.image_gallery.first()
+        if thumbnail:
+            return thumbnail.image
+        else:
+            return None
     
     content_panels = Page.content_panels + [InlinePanel('image_gallery', label="Image Gallery"),
         FieldPanel('date'),
