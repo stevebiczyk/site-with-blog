@@ -18,6 +18,12 @@ class BlogIndexPage(Page):
     description = RichTextField(blank=True)
     
     content_panels = Page.content_panels + [FieldPanel("description")]
+    def get_context(self, request):
+        context = super().get_context(request)
+        blogposts = self.get.children().live().order_by('-first_published_at')
+        context["blogposts"] = blogposts
+        
+        return context
     
 class BlogPostTag(TaggedItemBase):
     content_object = ParentalKey("BlogPostPage", related_name="tagged_items", on_delete=models.CASCADE)

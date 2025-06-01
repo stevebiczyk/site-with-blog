@@ -14,7 +14,13 @@
 	<h1 class="blog-title">{{ page.title}}</h1>
     <div class="description">
 	{{page.description|richtext}}
-    </div>
+	
+	{% for post in blogposts %}
+	<div class="blog-post">
+			<a href="{% pageurl post %}">{{ post.title }}</a>
+		<p class="date">Published on: {{ post.date }}</p>
+	</div>
+		{% endfor %}
 </div>
     
 {% endblock %}

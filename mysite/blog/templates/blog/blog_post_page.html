@@ -39,8 +39,6 @@
 
 {% with images=page.image_gallery.all %}
 
-{% endwith %}
-
 {% if images %}
     <div></div class="image-gallery">
         <h2>Image Gallery</h2>
@@ -53,7 +51,9 @@
             {% endfor %}
         </ul>
 {% endif %}
-    
+{% endwith %}
+
+<a href='{{page.get_parent.url}}'>Return to blog</a>
 
 {% with  tags=page.tags.all  %}
     {% if tags %}
