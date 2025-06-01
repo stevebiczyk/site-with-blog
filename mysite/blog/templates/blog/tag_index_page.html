@@ -13,9 +13,10 @@
 <div>
     <p>
         <a href="{% pageurl post %}">{{ post.title }}</a>
+        <br/>
+        <small>Revised on: {{post.latest_revision_created_at}}</small>
     </p>
-</div>
-    
+</div> 
 {% endfor %}
     
         

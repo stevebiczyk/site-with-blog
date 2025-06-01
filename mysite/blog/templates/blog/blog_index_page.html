@@ -16,22 +16,23 @@
 	
 	{% for post in blogposts %}
 	<div class="blog-post">
+		<h2>
 		<a href="{% pageurl post %}">{{ post.title }}</a>
-		<p class="date">Published on: {{ post.date }}</p>
-
+		</h2>
 		<div class="post-info">
 		{% with thumbnail=post.specific.main_image %}
 		{% if thumbnail %}
 		<div class="thumbnail">
 			{% image thumbnail fill-340x340 %}
-		</div>
-		{% endif %}
-		{% endwith %}
-		<div class="post-info">
-			{{ post.specific.intro|richtext }}			
+        </div>
+        {% endif %}
+        {%endwith%}
+        <div class="post-info">
+            {{post.specific.intro|richtext}}
+        </div>
+    </div>
 	</div>
-		{% endfor %}
+	
+    {%endfor%}
 </div>
-    
 {% endblock %}
-    
