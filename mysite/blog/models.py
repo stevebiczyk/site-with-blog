@@ -9,6 +9,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 from wagtail.snippets.models import register_snippet
+from wagtail.search import index
 
 
 class BlogIndexPage(Page):
@@ -57,6 +58,8 @@ class BlogPostPage(Page):
         FieldPanel('body'),
         FieldPanel('tags'),
     ]
+    
+    search_fields = Page.search_fields + [index.SearchField('intro'), index.SearchField('body'), index.FilterField('date')]
     
 class BlogPageImageGallery(Orderable):
     page = ParentalKey(

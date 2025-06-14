@@ -12,7 +12,13 @@
 
 <div class="container">
 	<h1 class="blog-title">{{ page.title}}</h1>
+	<div class="descrption">
 	{{page.description|richtext}}
+	</div>
+	<form action="{% url 'search' %}" method="get">
+    <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+    <input type="submit" value="Search" class="button">
+	</form>
 	
 	{% for post in blogposts %}
 	<div class="blog-post">
